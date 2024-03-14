@@ -1,6 +1,5 @@
 # WISH EDU CDN System
-
-
+### Dev domain - cdn.althgamer.ru
 
 ## Routes
 ### GET files
@@ -51,9 +50,9 @@
 ```
 ##### Response:
 - GET, if everything's OK:
-```<file_url_on_cdn: str>, 200```
+```{"file_endpoint": <file_url_on_cdn: str>}, 200```
 - DELETE, if everything's OK:
-```'OK', 200```
+```{'status': 'OK'}, 200```
 - If there's no file with such file_id:
 ```{'errorMessage': 'No file with such file_id'}, 400```
 - If there's some inner SQL error:
@@ -73,7 +72,7 @@
 A binary file that complies with the requirements of the GET clause
 ##### Respone:
 - If everything's OK, and file successfully loaded and saved:
-```<file's id on cdn's db>, 200```
+```{"file_id": <file's id on cdn's db>}, 200```
 - If someting goes wrong(for example, wrong querry params names):
 ```<default error page>, 40x```
 ---
@@ -92,7 +91,7 @@ A binary file that complies with the requirements of the GET clause
 ```
 ##### Response
 - GET, if everything's OK:
-```<file_url_on_cdn: str>, 200```
+```{"file_endpoint": <file_url_on_cdn: str>}, 200```
 - If there's no such owner(combination of type(user, group) and id):
 ```{'errorMessage': 'No such owner'}, 400```
 - If there's some inner SQL error:

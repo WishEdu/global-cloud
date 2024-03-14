@@ -36,10 +36,10 @@ def handle_file():
     file_id = str(db.add_file(file_owner, file_owner_id, file_type, file_name)['id'])
     file.save(path.join(ASSETS_DIR, url))
 
-    return file_id, 200
+    return flask.jsonify({"file_id": file_id}), 200
 
 
-@app.route(MAIN_ROUTE)
+@app.route(MAIN_ROUTE, methods=['GET', 'DELETE'])
 def get_or_delete_file_url_by_id():
     file_id = flask.request.args['file_id']
     data = db.get_by_file_id(file_id)
@@ -53,14 +53,14 @@ def get_or_delete_file_url_by_id():
         return flask.jsonify({'errorMessage': 'No such file'}), 500
     
     if flask.request.method == 'GET':
-        return url, 200
+        return flask.jsonify({"file_endpoint": '/assets/' + url}), 200
 
     if flask.request.method == 'DELETE':
         delete_code = db.delete_by_file_id(file_id)
         if delete_code == -1:
             return flask.jsonify({'errorMessage': 'SQL error'}), 500
         remove(path_)
-        return 'OK', 200
+        return flask.jsonify({"status": "OK"}), 200
     
 
 @app.get(MAIN_ROUTE+'/avalogo')
@@ -78,8 +78,7 @@ def get_user_avatar_or_group_logo():
     if not path.isfile(path.join(ASSETS_DIR, url)):
         return flask.jsonify({'errorMessage': 'No such file'}), 500
     
-    return path.join('/assets', url), 200
-
+    return flask.jsonify({"file_endpoint": path.join('/assets', url)}), 200
 
 
 if __name__ == '__main__':
